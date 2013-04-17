@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>OriGami</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css" />
+  </head>
+
+  <body class>
+	  <div class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+      	<div class="navbar-inner">
+        	<div class="container">
+        		 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	        		 <span class="icon-bar"></span>
+	        		 <span class="icon-bar"></span>
+	        		 <span class="icon-bar"></span>
+	        	</a>
+		        <a class="brand" href="#">OriGami</a>
+		        <div class="nav-collapse collapse">
+			        <ul class="nav pull-left">
+				        <li class="dropdown" id="accountmenu">  
+					        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Route<b class="caret"></b></a>  
+					        <ul class="dropdown-menu">  
+						        <li><a href="#loadRouteModal" role="button" data-toggle="modal">Laden</a></li>  
+						    </ul>  
+						</li>
+						<li><a href="#faqModal" id="faq" role="button" data-toggle="modal">FAQ</a></li>
+						<li><a href="#about" id="about" rel="popover" data-content="&copy; GI@School 2012">Über</a></li>
+						<li class="dropdown" id="gallery">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Basemap<b class="caret"></b></a>  
+					        <ul class="dropdown-menu">  
+						        <div id="basemapMenu" class="basemapMenu">
+							        
+						        </div>
+						    </ul>
+						</li>
+					</ul>
+					<ul class="nav pull-right">
+						<li><a><span id="info" class="label pull-right"></span></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+    </div>
+
+    <div class="container fill" id="main">
+	    <div id="map" class="claro">
+		    
+	    </div>
+	    <div id="waydescription">
+		     <textarea type="text" rows=2 readonly="readonly" style="display: none;" id="descript">Suchen Sie zunächst den Startpunkt: Zoomen und/oder verschieben Sie die Karte so, dass Sie den Startpunkt anklicken können.</textarea>
+		     <textarea type="text" rows=2 readonly="readonly" style="display: none;" id="descript2"></textarea>
+		</div>
+		<div id="smileycanvas">
+			<canvas width="128" height="128" id="smiley">
+				<p>You need canvas!</p>
+				<p>This example requires a browser that supports the
+				<a href="http://www.w3.org/html/wg/html5/">HTML5</a> 
+				&lt;canvas&gt; feature.</p>
+			</canvas>
+		</div>
+    </div> <!-- /container -->
+		
+		<!--
+<div id="help">
+			<a href="#helpButton"></a>
+		</div>
+-->
+	
+	<!-- FAQ Modal -->
+	<div id="faqModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="faqModalLabel" aria-hidden="true">
+    	<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    		<h3 id="faqModalLabel">FAQ</h3>
+    	</div>
+    	<div class="modal-body">
+	    	<div class="accordion" id="accordion2">
+		    	<div class="accordion-group">
+			    	<div class="accordion-heading">
+				    	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Wie lege ich eine neue Route an?</a>
+				    </div>
+				    <div id="collapseOne" class="accordion-body collapse">
+					    <div class="accordion-inner">
+
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Warum muss ich mir die RouteID merken?</a>
+					</div>
+					<div id="collapseTwo" class="accordion-body collapse">
+						<div class="accordion-inner">
+
+						</div>
+					</div>
+				</div>
+			</div>
+	    </div>
+	</div>
+	
+	<div id="loadRouteModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="loadRouteModalLabel" aria-hidden="true">
+    	<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    		<h3 id="loadRouteModalLabel">Route laden</h3>
+    	</div>
+    	<div class="modal-body">
+			<div class="control-group">
+				<label class="control-label" for="input01">Bitte geben Sie hier eine gültige RouteID ein:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" id="loadRouteID" maxlength="5" name="loadRouteID">
+				</div>
+				<span id="notFound" class="label label-important" style="visibility:hidden;">Zu der von Ihnen eingegebenen RouteID gibt es keine Route!</span>
+				<hr>
+				<label class="control-label">Bitte geben Sie hier Ihre Teilnehmernummer ein:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" id="participantNr">
+				</div>
+			</div>
+	    </div>
+        <div class="modal-footer">
+	    	<button id="cancelLoadRoute" class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
+	    	<button id="loadRoute" class="btn btn-primary" disabled="true" onclick="loadRoute(document.getElementById('loadRouteID').value,document.getElementById('participantNr').value)">Route laden</button>
+        </div>
+	</div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.js"></script>
+    <script>var dojoConfig = { parseOnLoad: true }</script>
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
+    <script src="js/mapScript.js"></script>
+  </body>
+</html>
