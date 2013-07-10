@@ -12,6 +12,7 @@ var _symbol;
 var _mode;
 var _type;
 var _routeID;
+var _routeName;
 var infoWindow;
 var template;
 var selectedFeature;
@@ -19,10 +20,6 @@ var checkRouteFL;
 var basemapGallery;
 var activeBasemap = "basemap_6";
 var waypointIdStartPoint=0;
-/*
-var waypointIdWayPoint=0;
-var waypointIdEndPoint=10;
-*/
 var waypointID;
 
 function init() 
@@ -110,7 +107,7 @@ function initSelectToolbar(results)
     	if(_mode==1)
     	{
 	    	var pt = new esri.geometry.Point(evt.mapPoint.x,evt.mapPoint.y,map.spatialReference);
-	    	var attr = {"route_id":_routeID,"type":_type};
+	    	var attr = {"route_id":_routeID,"type":_type,"name":_routeName};
 	    	var graphic = new esri.Graphic(pt,_symbol,attr);
 	    	routesFL.applyEdits([graphic],null,null,applyEditsSucceeded,applyEditsFailed);
 	    	graphic.show();
@@ -343,7 +340,8 @@ function createRoute(status,routeName,routeID,email)
 	}
 	
 	_routeID = routeID;
-	
+	_routeName = routeName;
+
 	$('#startpoint').removeClass("disabled");
 	$('#waypoint').removeClass("disabled");
 	$('#endpoint').removeClass("disabled");
@@ -389,8 +387,6 @@ function getTextContent(graphic)
 	}
 	
 	return  "<div id='attrInfo'><p>Bitte geben Sie hier die Wegbeschreibung an: <textarea rows='3' id='attrDescription' maxlength='500'>"+description+"</textarea></p><hr><p>Bitte geben Sie hier die Hilf ein: <textarea rows='3' id='attrHelp' maxlength='250'>"+help+"</textarea></div class='attrBtn'><div><button id='attrDelete' class='btn btn-danger' onclick='attrDelete();'>L&oumlschen</button> <button id='attrSave' class='btn btn-primary' onclick='attrSave();'>Speichern</button></div>";
-	
-	/* return  "<div id='attrInfo'><p>Bitte geben Sie hier die Wegbeschreibung an: <input type='text' id='attrDescription' value='"+description+"' class='span4'></br><hr><p>Bitte geben Sie hier die Hilf ein:</br> <input type='text' id='attrHelp' value='"+help+"' class='span4'></div class='attrBtn'><div><button id='attrDelete' class='btn btn-danger' onclick='attrDelete();'>L&oumlschen</button> <button id='attrSave' class='btn btn-primary' onclick='attrSave();'>Speichern</button></div>"; */
 }
 
 dojo.ready(init);
